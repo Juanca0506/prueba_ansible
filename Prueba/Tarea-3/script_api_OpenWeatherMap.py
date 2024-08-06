@@ -2,7 +2,7 @@ import requests
 import json
 
 # Define la clave de la API y la ciudad para la consulta
-API_KEY = '5bdad9ff366db4dac7d46c9d00d686f9'  # Reemplaza con tu propia clave de API de OpenWeatherMap
+API_KEY = '5bdad9ff366db4dac7d46c9d00d686f9' 
 CITY = 'Medellin'
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric"
 
@@ -10,7 +10,7 @@ URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&
 def get_weather_data(url):
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Lanza una excepción si la respuesta tiene un error HTTP
+        response.raise_for_status()  
         return response.json()
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")

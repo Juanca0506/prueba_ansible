@@ -1,7 +1,7 @@
 # Obtener la fecha y hora actual
 $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
-# Obtener el uso de CPU usando WMI
+# Obtener el uso de CPU
 $cpuLoad = Get-WmiObject win32_processor | Measure-Object -Property LoadPercentage -Average | Select -ExpandProperty Average
 $cpuUsage = [math]::Round($cpuLoad, 2)
 

@@ -77,7 +77,7 @@ EOF
 )
 
 # Guardar el resultado en un archivo HTML
-outputPath="system_resources_report.html"
+outputPath="recursos_sistema_linux.html"
 echo "$htmlContent" > $outputPath
 
 echo "Reporte generado: $outputPath"
