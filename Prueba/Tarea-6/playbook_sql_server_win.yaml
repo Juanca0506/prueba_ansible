@@ -1,0 +1,31 @@
+---
+- name: Instalar y configurar SQL Server en Windows
+  hosts: windows
+  tasks:
+    - name: Descargar instalador de SQL Server
+      win_get_url:
+        url: https://app.box.com/s/skzmuzbuh6zrefs67ohhui6waf9q9ujz
+        dest: C:\temp\SQL2022-SSEI-Expr.exe
+
+    - name: Ejecutar el instalador de SQL Server
+      win_command: C:\temp\SQL2022-SSEI-Expr.exe /Q /ACTION=Install /FEATURES=SQL,RS /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="NT Service\MSSQLSERVER" /SQLSVCPASSWORD="Nacional2016" /AGTSVCACCOUNT="NT Service\SQLServerAgent" /AGTSVCPASSWORD="Nacional2016" /SECURITYMODE=SQL /SAPWD="Nacional2016*" /TCPENABLED=1 /NPENABLED=1
+
+    - name: Esperar a que SQL Server esté disponible
+      win_wait_for:
+        port: 1433
+        delay: 30
+        timeout: 300
+
+    - name: Crear una base de datos en SQL Server
+      win_shell: |
+        sqlcmd -S localhost -U prueba_ansible -P Nacional2016 -Q "CREATE DATABASE Prueba_Ansible_db"
+
+    - name: Configurar el firewall para SQL Server
+      win_firewall_rule:
+        name: "SQL Server"
+        enable: yes
+        direction: in
+        localport: 1433
+        protocol: TCP
+        action: allow
+        description: "Permitir conexion"

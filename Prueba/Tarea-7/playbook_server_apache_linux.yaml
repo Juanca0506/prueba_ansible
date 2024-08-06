@@ -1,0 +1,43 @@
+---
+- name: Instalar y configurar Apache
+  hosts: linux
+  become: yes
+  tasks:
+    - name: Instalar Apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: Iniciar y habilitar el servicio de Apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Crear un archivo HTML básico
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+            <head>
+              <title>Página de Bienvenida</title>
+            </head>
+            <body>
+              <h1>¡Bienvenido a tu servidor Apache!</h1>
+              <p>Este es un servidor web configurado con Ansible.</p>
+            </body>
+          </html>
+
+    - name: Abrir el puerto 80 en el firewall
+      firewalld:
+        port: 80/tcp
+        permanent: true
+        state: enabled
+      notify:
+        - Reiniciar firewalld
+
+  handlers:
+    - name: Reiniciar firewalld
+      service:
+        name: firewalld
+        state: restarted
